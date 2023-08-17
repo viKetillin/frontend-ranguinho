@@ -1,0 +1,41 @@
+.h-70vh {
+    height: 70vh !important;
+}
+
+input {
+    accent-color: #399500;
+}
+
+@keyframes down {
+    from {
+        max-height: 500px;
+        overflow: hidden;
+    }
+
+    to {
+        max-height: 0px;
+        overflow: hidden;
+    }
+}
+
+@keyframes up {
+    from {
+        max-height: 0px;
+        overflow: hidden;
+    }
+
+    to {
+        max-height: 500px;
+        overflow: hidden;
+    }
+}
+
+.header {
+    max-height: 700px
+}
+
+@media screen and (max-width: 768px) {
+    .header {
+        max-height: 400px
+    }
+}
