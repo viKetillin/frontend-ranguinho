@@ -11,6 +11,7 @@ interface Franquia {
     instagram: string,
     linkCardapio: string,
     logo: string,
+    imagemCapa: string,
     categoriaEstabelecimento: CategoriaEstabelecimento
 }
 

@@ -246,7 +246,7 @@ function App({ lang }: MyProps) {
             }
 
             <header className="relative w-full header h-screen">
-                <img className="w-full h-full z-10 absolute object-cover" src="/assets/imagens/capaCardapio.jpg" />
+                <img className="w-full h-full z-10 absolute object-cover" src={requestsData["franquia"].data?.imagemCapa || "/assets/imagens/capaCardapio.jpg"}/>
                 <nav className="relative z-30 top-10">
                     <div className="container px-5 sm:mx-auto flex flex-wrap gap-2 justify-between items-center">
                         <div className=''>

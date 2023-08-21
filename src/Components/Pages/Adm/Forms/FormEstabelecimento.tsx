@@ -45,6 +45,8 @@ const FormEstabelecimento = ({ franquia }: EstabelecimentoFormProps) => {
 
     const [selectedImage, setSelectedImage] = useState(null);
 
+    const [selectedImagemCapa, setSelectedImagemCapa] = useState(null);
+
     const LoadHorarios = () => {
         setGetHorarios({ status: undefined, data: [] });
         const headers = { Authorization: `Bearer ${cookies.authentication}` };
@@ -94,9 +96,25 @@ const FormEstabelecimento = ({ franquia }: EstabelecimentoFormProps) => {
             reader.onload = (e) => {
                 const base64Data = e.target.result;
                 setSelectedImage(base64Data);
-              };
-          
-              reader.readAsDataURL(file);
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            console.error('Arquivo inválido. Selecione uma imagem.');
+        }
+    };
+
+    const handleImageCapaChange = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        if (file && isImageFile(file)) {
+            reader.onload = (e) => {
+                const base64Data = e.target.result;
+                setSelectedImagemCapa(base64Data);
+            };
+
+            reader.readAsDataURL(file);
         } else {
             console.error('Arquivo inválido. Selecione uma imagem.');
         }
@@ -144,6 +162,7 @@ const FormEstabelecimento = ({ franquia }: EstabelecimentoFormProps) => {
                         FranquiaId: franquia?.id
                     })),
                     LinkLogo: selectedImage ? selectedImage : form?.logo,
+                    ImagemCapa: selectedImagemCapa ? selectedImagemCapa : form?.imagemCapa,
                     CategoriaEstabelecimentoId: form.categoriaEstabelecimento?.id || categoriasEstabelecimento[0].id,
                 }
 
@@ -267,8 +286,16 @@ const FormEstabelecimento = ({ franquia }: EstabelecimentoFormProps) => {
                                 </div>
                             </div>
                             <div className="w-full">
-                                <img className="w-80" src={(form?.logo === "" ? undefined : form?.logo)} alt="logo" />
-                                <input type="file" accept="image/*" onChange={handleImageChange} />
+                                <div className="my-2 flex flex-start gap-2">
+                                    <label>Logo</label>
+                                    <img className="w-80" src={(form?.logo === "" ? undefined : form?.logo)} alt="logo" />
+                                    <input type="file" accept="image/*" onChange={handleImageChange} />
+                                </div>
+                                <div className="my-2 flex flex-start gap-2">
+                                    <label>Capa</label>
+                                    <img className="w-80" src={(form?.imagemCapa === "" ? undefined : form?.imagemCapa)} alt="imagem capa" />
+                                    <input type="file" accept="image/*" onChange={handleImageCapaChange} />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -404,6 +431,7 @@ FormEstabelecimento.defaultProps = {
         endereco: "",
         telefone: "",
         logo: "",
+        imagemCapa: "",
         whatsapp: "",
         facebook: "",
         instagram: "",
