@@ -64,8 +64,7 @@ const Index = ({ produto, CloseCallback, idFranquia, categorias, onSuccess }: Pr
                     Ativo: form.ativo,
                     ValorProduto: form?.valor,
                     NomeProduto: (form.nome || "").trim(),
-                    ImagemProduto: selectedImage,
-                    LinkImagemProduto: form.imagem,
+                    LinkImagemProduto: selectedImage ? selectedImage : form?.imagem,
                     DescricaoProduto: (form.descricao || "").trim(),
                     CategoriaId: form?.categoria?.id,
                     ProductDescription: (form.description || "").trim(),
@@ -73,27 +72,12 @@ const Index = ({ produto, CloseCallback, idFranquia, categorias, onSuccess }: Pr
                     Ingredientes: ingredientesSelecionados.map(ingrediente => ({ Id: ingrediente.id, quantidade: 1 }))
                 }
 
-                const formData = new FormData();
-
-                for (let key in data) {
-                    if (key === "Ingredientes") {
-                        const ingredientes = data[key];
-                        ingredientes.forEach((ingrediente, index) => {
-                            for (let ingredienteKey in ingrediente) {
-                                formData.append(`${key}[${index}].${ingredienteKey}`, ingrediente[ingredienteKey]);
-                            }
-                        });
-                    } else {
-                        formData.append(key, data[key]);
-                    }
-                }
-
-                const headers = { Authorization: `Bearer ${cookies.authentication}`, "Content-Type": "multipart/form-data", }
+                const headers = { Authorization: `Bearer ${cookies.authentication}`}
 
                 if (data?.Id)
-                    await api.put("/api/admin/Cardapio/produto", formData, { headers })
+                    await api.put("/api/admin/Cardapio/produto", data, { headers })
                 else
-                    await api.post("/api/admin/Cardapio/produto", formData, { headers })
+                    await api.post("/api/admin/Cardapio/produto", data, { headers })
 
 
                 onSuccess()
@@ -135,8 +119,15 @@ const Index = ({ produto, CloseCallback, idFranquia, categorias, onSuccess }: Pr
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
+        const reader = new FileReader();
+
         if (file && isImageFile(file)) {
-            setSelectedImage(event.target.files[0]);
+            reader.onload = (e) => {
+                const base64Data = e.target.result;
+                setSelectedImage(base64Data);
+              };
+          
+              reader.readAsDataURL(file);
         } else {
             console.error('Arquivo inválido. Selecione uma imagem.');
         }

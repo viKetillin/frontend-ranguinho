@@ -88,8 +88,15 @@ const FormEstabelecimento = ({ franquia }: EstabelecimentoFormProps) => {
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
+        const reader = new FileReader();
+
         if (file && isImageFile(file)) {
-            setSelectedImage(event.target.files[0]);
+            reader.onload = (e) => {
+                const base64Data = e.target.result;
+                setSelectedImage(base64Data);
+              };
+          
+              reader.readAsDataURL(file);
         } else {
             console.error('Arquivo inválido. Selecione uma imagem.');
         }
@@ -136,8 +143,7 @@ const FormEstabelecimento = ({ franquia }: EstabelecimentoFormProps) => {
                         HoraInicio: horario.HoraInicio,
                         FranquiaId: franquia?.id
                     })),
-                    Logo: selectedImage,
-                    LinkLogo: form?.logo,
+                    LinkLogo: selectedImage ? selectedImage : form?.logo,
                     CategoriaEstabelecimentoId: form.categoriaEstabelecimento?.id || categoriasEstabelecimento[0].id,
                 }
 

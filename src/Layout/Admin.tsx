@@ -33,7 +33,7 @@ const Index = ({ children }) => {
                                     <span><FaAngleRight className="text-zinc-400" /></span> :
                                     <span><FaAngleDown className="text-zinc-400" /></span>}
                             </h2>
-                            <div className="collapse overflow-auto">
+                            <div className={`${collapseCadastros ? "collapse" : ""} overflow-auto`}>
                                 <div className="text-zinc-300 flex flex-col gap-4 pl-4 sm:pl-0 lg:pl-6">
                                     {user.role == "Admin" && <Link className="flex gap-2 hover:text-white items-center sm:flex-col lg:flex-row sm:text-sm lg:text-base" to="/admin/cadastro/usuarios"><FiUser className="sm:text-3xl lg:text-base" /> Usuários</Link>}
                                     <Link className="flex gap-2 hover:text-white items-center sm:flex-col lg:flex-row sm:text-sm lg:text-base" to="/admin/cadastro/estabelecimento"><FaStore className="sm:text-3xl lg:text-base" /> Estabelecimentos</Link>

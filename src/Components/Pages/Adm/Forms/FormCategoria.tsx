@@ -62,19 +62,26 @@ const Index = ({ categoria, franquiaId, CloseCallback, onSuccess }: CadastroCate
 
     }, [form])
 
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        if (file && isImageFile(file)) {
-            setSelectedImage(event.target.files[0]);
-        } else {
-            console.error('Arquivo inválido. Selecione uma imagem.');
-        }
-    };
-
     const isImageFile = (file: { [x: string]: any }) => {
         const fileType = file['type'];
         const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'];
         return validImageTypes.includes(fileType);
+    };
+
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        if (file && isImageFile(file)) {
+            reader.onload = (e) => {
+                const base64Data = e.target.result;
+                setSelectedImage(base64Data);
+              };
+          
+              reader.readAsDataURL(file);
+        } else {
+            console.error('Arquivo inválido. Selecione uma imagem.');
+        }
     };
 
     const FormSubmit = async (evt?: React.FormEvent<HTMLFormElement>) => {
@@ -91,9 +98,8 @@ const Index = ({ categoria, franquiaId, CloseCallback, onSuccess }: CadastroCate
                     Id: form?.id || 0,
                     NomeCategoriaProduto: form.descricao.trim(),
                     CategoryName: form.description.trim(),
-                    LinkImagemFiltro: form.imagemFiltro.trim(),
+                    LinkImagemFiltro: selectedImage ? selectedImage : form?.imagemFiltro,
                     ExibirCardapio: form.exibirCardapio,
-                    ImagemFiltro: selectedImage,
                     EstabelecimentoId: franquiaId,
                     Adicionais: ingredientesAdicionais.map(ingrediente => ({
                         IngredienteId: ingrediente.idIngrediente,
