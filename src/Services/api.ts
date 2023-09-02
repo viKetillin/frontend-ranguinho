@@ -5,6 +5,10 @@ const api = axios.create({
     withCredentials: false,
 });
 
+api.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+api.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS';
+api.defaults.headers.common['Access-Control-Allow-Headers'] = 'Content-Type';
+
 export async function ResponseHandler(data, errors?: { data: any, errors: { [key: string]: { message: string } } }) {
     const errorCode = String(data.resultadoExecucaoEnum);
     const defaultErrors = {
