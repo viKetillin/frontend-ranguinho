@@ -336,7 +336,7 @@ function App({ lang }: MyProps) {
 
                 <div className='absolute h-full w-full z-20 bottom-0'>
                     <div data-aos="zoom-in" className='h-full justify-end sm:justify-center pb-6 sm:pb-0 flex flex-col px-5'>
-                        <img className='mx-auto' src={(requestsData["franquia"].data?.logo?.length > 0) ? requestsData["franquia"].data?.logo : "/assets/imagens/logos/ranguinho/05.png"} alt="logo ranguinho" />
+                        <img className='mx-auto max-w-xs' src={(requestsData["franquia"].data?.logo?.length > 0) ? requestsData["franquia"].data?.logo : "/assets/imagens/logos/ranguinho/05.png"} alt="logo estabelecimento" />
                         {requestsData["franquia"].data?.endereco &&
                             <span className='justify-center gap-1 font-bold flex item-center text-white pt-10'><FaMapMarkerAlt size={17} className="mt-1" />{`${requestsData["franquia"].data?.endereco || ""}, ${requestsData["franquia"].data?.cidade || ""} - ${requestsData["franquia"].data?.uf}` || ""}</span>
                         }

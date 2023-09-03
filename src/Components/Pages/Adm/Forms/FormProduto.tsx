@@ -202,7 +202,7 @@ const Index = ({ produto, CloseCallback, idFranquia, categorias, onSuccess }: Pr
                         </div>
                     </div>
                     <div>
-                        <img className="w-80" src={(form?.imagem === "" ? undefined : form?.imagem)} alt="icone filtro" />
+                        <img className="w-80" src={(form?.imagem === "" ? undefined : form?.imagem)} alt="Imagem produto" />
                         <input type="file" accept="image/*" onChange={handleImageChange} />
                     </div>
                     <div className="my-4">
