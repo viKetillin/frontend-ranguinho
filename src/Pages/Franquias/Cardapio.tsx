@@ -271,10 +271,10 @@ function App({ lang }: MyProps) {
                                         {
                                             isOpened !== undefined && [
                                                 { "pt_BR": "Segunda-Feira", "en_US": "Monday" },
-                                                { "pt_BR": "Terça-feira", "en_US": "Tuesday" },
-                                                { "pt_BR": "Quarta-feira", "en_US": "Wednesday" },
-                                                { "pt_BR": "Quinta-feira", "en_US": "Thursday" },
-                                                { "pt_BR": "Sexta-feira", "en_US": "Friday" },
+                                                { "pt_BR": "Terça-Feira", "en_US": "Tuesday" },
+                                                { "pt_BR": "Quarta-Feira", "en_US": "Wednesday" },
+                                                { "pt_BR": "Quinta-Feira", "en_US": "Thursday" },
+                                                { "pt_BR": "Sexta-Feira", "en_US": "Friday" },
                                                 { "pt_BR": "Sábado", "en_US": "Saturday" },
                                                 { "pt_BR": "Domingo", "en_US": "Sunday" }
                                             ]
