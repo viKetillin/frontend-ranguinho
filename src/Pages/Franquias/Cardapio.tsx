@@ -82,16 +82,27 @@ function App({ lang }: MyProps) {
         try {
             franquia = await api.get(`/api/Navegacao/estabelecimento${link}`)
                 .then(response => {
-                    ResponseHandler(response.data).then(alert => {
+                    ResponseHandler(response.data.data).then(alert => {
                         ["sucess"].includes(alert.alertType) ??
                             alertsDispatch({ type: 'ADD-FROM-ORIGIN', origin: "", alerts: [{ message: alert.message, type: alert.alertType }] })
                     })
+                    let horarios = response.data.data.horarioFuncionamento.map(diaEHorario => {
+                        return {
+                            diaInicio: diaEHorario.diaInicio,
+                            diaFim: diaEHorario.diaFim,
+                            horaInicio: diaEHorario.horaInicio,
+                            horaFim: diaEHorario.horaFim
+                        }
+                    })
+                    setHorarios(horarios)
+                    setIsOpened(response.data.data.statusEstabelecimento)
+
                     return response.data.data
                 }).catch(err => {
                     RequestsDataDispatch({ reqURL: "franquia", requestData: { state: "error" } })
                 })
 
-                RequestsDataDispatch({ reqURL: "franquia", requestData: { state: "success", data: franquia } })
+            RequestsDataDispatch({ reqURL: "franquia", requestData: { state: "success", data: franquia } })
 
             await api.get(`/api/Navegacao/cardapio${franquia?.id}`)
                 .then(response => {
@@ -131,37 +142,7 @@ function App({ lang }: MyProps) {
             RequestsDataDispatch({ reqURL: "produtosCategoria", requestData: { state: "error", data: [] } });
             alertsDispatch({ type: 'ADD-FROM-ORIGIN', origin: "", alerts: [{ message: "Ocorreu um erro ao carregar dados do estabelecimento", type: 'error' }] });
             console.error(err);
-        }
-
-        api.get(`/api/Navegacao/horario-funcionamento${franquia?.id}`)
-            .then(resp => {
-                ResponseHandler(resp.data).then(alert => {
-                    ["sucess"].includes(alert.alertType) ??
-                        alertsDispatch({ type: 'ADD-FROM-ORIGIN', origin: "", alerts: [{ message: alert.message, type: alert.alertType }] })
-                })
-                let isOpened = false;
-                let horarios = resp.data.data.map(diaEHrario => {
-                    let horaInicio = diaEHrario.horaInicio.split(":").map(e => Number(e))
-                    let horaFim = diaEHrario.horaFim.split(":").map(e => Number(e))
-
-                    let now = moment()
-
-                    let dateTimeInicio = moment(now.format("YYYY-MM-DD")).set({ "hour": horaInicio[0], "minute": horaInicio[1] }).day(daysArray.indexOf(diaEHrario.diaInicio))
-                    let dateTimeFim = moment(dateTimeInicio.format("YYYY-MM-DD")).set({ "hour": horaFim[0], "minute": horaFim[1] }).day(daysArray.indexOf(diaEHrario.diaFim))
-
-                    if (now.isBetween(dateTimeInicio, dateTimeFim))
-                        isOpened = true
-
-                    return {
-                        diaInicio: diaEHrario.diaInicio,
-                        diaFim: diaEHrario.diaFim,
-                        horaInicio: diaEHrario.horaInicio,
-                        horaFim: diaEHrario.horaFim
-                    }
-                })
-                setHorarios(horarios)
-                setIsOpened(isOpened)
-            })
+        }       
     }
 
     const [meta, setMeta] = useState<{ title: string, description: string, keywords: string }>({
@@ -246,7 +227,7 @@ function App({ lang }: MyProps) {
             }
 
             <header className="relative w-full header h-screen">
-                <img className="w-full h-full z-10 absolute object-cover" src={requestsData["franquia"].data?.imagemCapa || "/assets/imagens/capaCardapio.jpg"}/>
+                <img className="w-full h-full z-10 absolute object-cover" src={requestsData["franquia"].data?.imagemCapa || "/assets/imagens/capaCardapio.jpg"} />
                 <nav className="relative z-30 top-10">
                     <div className="container px-5 sm:mx-auto flex flex-wrap gap-2 justify-between items-center">
                         <div className=''>
