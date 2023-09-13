@@ -36,6 +36,7 @@ const Index = ({ produto, CloseCallback, idFranquia, categorias, onSuccess }: Pr
         ativo: produto?.ativo || true,
         categoria: produto?.categoria || categorias[0],
         linkCardapio: produto?.linkCardapio || "",
+        produtoEstabelecimentoId: produto?.produtoEstabelecimentoId || 0
     })
 
     const [ingredientes, setIngredientes] = useState<Ingrediente[]>()
@@ -69,7 +70,8 @@ const Index = ({ produto, CloseCallback, idFranquia, categorias, onSuccess }: Pr
                     CategoriaId: form?.categoria?.id,
                     ProductDescription: (form.description || "").trim(),
                     ValorPromocional: form?.valorPromocional,
-                    Ingredientes: ingredientesSelecionados.map(ingrediente => ({ Id: ingrediente.id, quantidade: 1 }))
+                    Ingredientes: ingredientesSelecionados.map(ingrediente => ({ Id: ingrediente.id, quantidade: 1 })),     
+                    ProdutoEstabelecimentoId: form?.produtoEstabelecimentoId               
                 }
 
                 const headers = { Authorization: `Bearer ${cookies.authentication}`}
@@ -94,7 +96,7 @@ const Index = ({ produto, CloseCallback, idFranquia, categorias, onSuccess }: Pr
         if (produto?.id)
             api.get("/api/admin/Cardapio/produto", { headers: { Authorization: `Bearer ${cookies.authentication}` }, params: { idEstabelecimento: idFranquia, idProduto: produto?.id } })
                 .then(res => {
-                    setIngredientesSelecionados(res.data.data.ingredientes.map(ingrediente => ({ id: ingrediente.idIngrediente, nome: ingrediente.nomeIngrediente })))
+                    setIngredientesSelecionados(res.data.data.ingredientes.map(ingrediente => ({ id: ingrediente.id, nome: ingrediente.nomeIngrediente })))
                 }).catch(err => { console.error(err) })
     }, [])
 

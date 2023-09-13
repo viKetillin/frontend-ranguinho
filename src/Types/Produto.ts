@@ -17,4 +17,5 @@ export default interface Produto {
     imagem: string,
     categoria?: Categoria,
     linkCardapio?: string
+    produtoEstabelecimentoId?: number
 }

@@ -87,7 +87,7 @@ const Index = () => {
                             return {
                                 id: produto.id,
                                 nome: produto.nomeProduto,
-                                linkCardapio: filter.franquia || franquias.data[0]?.linkCardapio,
+                                linkCardapio: franquias.data[0]?.linkCardapio,
                                 descricao: produto.descricaoProduto,
                                 description: produto.productDescription,
                                 imagem: produto.imagemProduto,
@@ -97,7 +97,8 @@ const Index = () => {
                                 categoria: {
                                     id: produtosCategoria.idCategoria,
                                     descricao: produtosCategoria.nomeCategoria
-                                }
+                                },
+                                produtoEstabelecimentoId: produto.produtoEstabelecimentoId
                             }
                         })
                     }
@@ -158,6 +159,7 @@ const Index = () => {
                 produto={selectedProduto} />
 
             <FormProdutoPopup
+                key={selectedCategoria?.id || 'default-key'}
                 open={popup === "produto-form"}
                 onClose={() => setPopup(undefined)}
                 onSuccess={() => { alertsDispatch({ type: "ADD-FROM-ORIGIN", alerts: [{message: `Produto ${selectedCategoria?.id ? "editado" : "criado"} com sucesso!`  , type: "success" }], origin: "produto-success" }); LoadProducts(); }}
@@ -194,7 +196,7 @@ const Index = () => {
                         {franquias !== undefined &&
                             <select onChange={(evt) => setFilter({ ...filter, franquia: Number(evt.currentTarget.value) })} disabled={["Franqueado", "Funcionário"].includes(user?.role)} value={filter.franquia} className="form-select px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded focus:text-gray-700 focus:bg-white focus:border-gray-600 focus:outline-none">
                                 {
-                                    franquias?.data.map(franquia => <option key={franquia.linkCardapio} value={franquia.id}>{franquia.nome}</option>)
+                                    franquias?.data.map(franquia => <option key={franquia.linkCardapio} value={franquia.linkCardapio}>{franquia.nome}</option>)
                                 }
                             </select>
                         }
